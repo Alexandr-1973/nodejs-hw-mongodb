@@ -3,7 +3,6 @@ import pino from 'pino-http';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { getAllContacts, getContactById } from './services/contacts.js';
-import mongoose from 'mongoose';
 
 dotenv.config();
 
@@ -34,9 +33,13 @@ export const setupServer = () => {
   });
 
   app.get('/contacts/:contactId', async (req, res) => {
+    const contacts = await getAllContacts();
+
     const { contactId } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(contactId)) {
+    const queryId = contacts.find((item) => item.id === contactId);
+    if (!queryId) {
       res.status(404).json({
+        status: 404,
         message: `Contact with ${contactId} not found`,
       });
       return;
@@ -50,11 +53,10 @@ export const setupServer = () => {
     });
   });
 
-  app.use('*', (req, res, next) => {
+  app.use('*', (req, res) => {
     res.status(404).json({
       message: 'Not found',
     });
-    next();
   });
 
   app.listen(PORT, () => {
