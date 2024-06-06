@@ -5,10 +5,17 @@ import dotenv from 'dotenv';
 // import { getAllContacts, getContactById } from './services/contacts.js';
 
 import contactsRouter from './routers/contacts.js';
+// import { HttpError } from 'http-errors';
+
+import { errorHandler } from './middlewares/errorHandler.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
+
 
 dotenv.config();
 
 const PORT = Number(process.env.PORT);
+
+
 
 export const setupServer = () => {
   const app = express();
@@ -62,6 +69,10 @@ export const setupServer = () => {
       message: 'Not found',
     });
   });
+
+  app.use('*', notFoundHandler);
+
+  app.use(errorHandler);
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
