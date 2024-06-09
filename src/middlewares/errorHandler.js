@@ -1,15 +1,15 @@
 import { HttpError } from 'http-errors';
 
 
-export const errorHandler = (err, req, res) => {
-	// Перевірка, чи отримали ми помилку від createHttpError
+export const errorHandler = (err, req, res, next) => {
+
 	if (err instanceof HttpError) {
 	  res.status(err.status).json({
-		status: err.status,
-		message: err.name,
-		data: err,
+		status: 404,
+		message: err.message,
+		data: {message: "Contact not found"},
 	  });
-	  return;
+	  next();
 	}
 
 	res.status(500).json({
