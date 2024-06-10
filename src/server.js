@@ -2,11 +2,7 @@ import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import dotenv from 'dotenv';
-// import { getAllContacts, getContactById } from './services/contacts.js';
-
 import contactsRouter from './routers/contacts.js';
-// import { HttpError } from 'http-errors';
-
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
