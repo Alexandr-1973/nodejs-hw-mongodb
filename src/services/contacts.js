@@ -28,16 +28,13 @@ export const updateContact = async (contactId, payload, options = {}) => {
 
   if (!rawResult || !rawResult.value) return null;
 
-  return {
-    student: rawResult.value,
-    isNew: Boolean(rawResult?.lastErrorObject?.upserted),
-  };
+  return rawResult.value;
 };
 
 export const deleteContact = async (contactId) => {
-  const student = await Contact.findOneAndDelete({
+  const contact = await Contact.findOneAndDelete({
     _id: contactId,
   });
 
-  return student;
+  return contact;
 };
