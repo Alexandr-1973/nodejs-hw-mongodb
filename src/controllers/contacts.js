@@ -5,7 +5,7 @@ import {
   updateContact,
   deleteContact,
 } from '../services/contacts.js';
-import createHttpError from 'http-errors';
+import { foundId } from '../validation/foundId.js';
 
 export const getContactsController = async (req, res) => {
   const contacts = await getAllContacts();
@@ -19,14 +19,9 @@ export const getContactsController = async (req, res) => {
 
 export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
-  const contacts = await getAllContacts();
-  const queryId = contacts.find((item) => item.id === contactId);
-  if (!queryId) {
-    next(createHttpError(404, `Contact with ${contactId} not found`));
-    return;
-  }
-
   const contact = await getContactById(contactId);
+  if (!foundId(contactId, contact, next)) return;
+
   res.json({
     status: 200,
     message: `Successfully found contact with id ${contactId}!`,
@@ -45,32 +40,21 @@ export const createContactController = async (req, res) => {
 };
 
 export const patchContactController = async (req, res, next) => {
-  const contacts = await getAllContacts();
   const { contactId } = req.params;
-  const queryId = contacts.find((item) => item.id === contactId);
-  if (!queryId) {
-    next(createHttpError(404, `Contact with ${contactId} not found`));
-    return;
-  }
+  const contact = await updateContact(contactId, req.body);
+  if (!foundId(contactId, contact, next)) return;
 
-  const result = await updateContact(contactId, req.body);
   res.json({
     status: 200,
     message: `Successfully patched a contact!`,
-    data: result,
+    data: contact,
   });
 };
 
 export const deleteContactController = async (req, res, next) => {
-  const contacts = await getAllContacts();
   const { contactId } = req.params;
-  const queryId = contacts.find((item) => item.id === contactId);
-  if (!queryId) {
-    next(createHttpError(404, `Contact with ${contactId} not found`));
-    return;
-  }
-
-  deleteContact(contactId);
+  const contact = await deleteContact(contactId);
+  if (!foundId(contactId, contact, next)) return;
 
   res.status(204).send();
 };
