@@ -20,7 +20,7 @@ const router = Router();
 
 router.use('/:contactId', isValidId);
 router.use(authenticate);
-router.use(checkId);
+// router.use(checkId);
 
 router.get('/', ctrlWrapper(getContactsController));
 router.get('/:contactId', ctrlWrapper(getContactByIdController));
