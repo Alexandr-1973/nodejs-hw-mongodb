@@ -24,8 +24,6 @@ const contactsSchema = new Schema(
     },
     userId: {
       type: String,
-      required: true,
-      default: 'All',
     },
   },
   {

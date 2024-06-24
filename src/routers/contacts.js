@@ -14,13 +14,11 @@ import {
 } from '../validation/contacts.js';
 import { isValidId } from '../middlewares/validateMongoId.js';
 import { authenticate } from '../middlewares/authenticate.js';
-import { checkId } from '../middlewares/checkId.js';
 
 const router = Router();
 
 router.use('/:contactId', isValidId);
 router.use(authenticate);
-// router.use(checkId);
 
 router.get('/', ctrlWrapper(getContactsController));
 router.get('/:contactId', ctrlWrapper(getContactByIdController));
