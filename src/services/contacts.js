@@ -80,12 +80,9 @@ export const updateContact = async (
 };
 
 export const deleteContact = async (personalUserId, contactId) => {
-  const contactById = await getContactById(personalUserId, contactId);
-
-  if (!contactById) return null;
-
   const contactDelete = await Contact.findOneAndDelete({
     _id: contactId,
+    userId: personalUserId,
   });
 
   return contactDelete;
