@@ -5,10 +5,14 @@ const contactsSchema = new Schema(
     name: {
       type: String,
       required: true,
+      minlength: 3,
+      maxlength: 20,
     },
     phoneNumber: {
       type: String,
       required: true,
+      minlength: 3,
+      maxlength: 20,
     },
     email: {
       type: String,
@@ -25,6 +29,7 @@ const contactsSchema = new Schema(
     userId: {
       type: String,
     },
+    photo: { type: String },
   },
   {
     timestamps: true,

@@ -8,7 +8,6 @@ import jwt from 'jsonwebtoken';
 import { SMTP } from '../constants/index.js';
 import { env } from '../utils/env.js';
 import { sendEmail } from '../utils/sendMail.js';
-// import { log } from 'console';
 
 export const registerUser = async (payload) => {
   const user = await User.findOne({ email: payload.email });
@@ -90,10 +89,6 @@ export const logoutUser = async (sessionId) => {
   await Session.deleteOne({ _id: sessionId });
 };
 
-// src/services/auth.js
-
-/* Інший код файлу */
-
 export const requestResetToken = async (email) => {
   const user = await User.findOne({ email });
   if (!user) {
@@ -122,12 +117,12 @@ export const requestResetToken = async (email) => {
       )}/reset-password?token=${resetToken}">here</a> to reset your password!</p>`,
     });
   } catch {
-    throw createHttpError(500, "Failed to send the email, please try again later.");
+    throw createHttpError(
+      500,
+      'Failed to send the email, please try again later.',
+    );
   }
-
-
 };
-
 
 export const resetPassword = async (payload) => {
   let entries;
@@ -135,7 +130,8 @@ export const resetPassword = async (payload) => {
   try {
     entries = jwt.verify(payload.token, env('JWT_SECRET'));
   } catch (err) {
-    if (err instanceof Error) throw createHttpError(401, "Token is expired or invalid.");
+    if (err instanceof Error)
+      throw createHttpError(401, 'Token is expired or invalid.');
     throw err;
   }
 
@@ -150,11 +146,7 @@ export const resetPassword = async (payload) => {
 
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
 
-  await User.updateOne(
-    { _id: user._id },
-    { password: encryptedPassword },
-  );
+  await User.updateOne({ _id: user._id }, { password: encryptedPassword });
 
   await Session.deleteOne({ userId: user._id });
-
 };
