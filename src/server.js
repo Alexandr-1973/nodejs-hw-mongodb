@@ -7,7 +7,6 @@ import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import cookieParser from 'cookie-parser';
 import { swaggerDocs } from './middlewares/swaggerDocs.js';
-// import { TEMP_UPLOAD_DIR } from './constants/index.js';
 
 dotenv.config();
 
@@ -29,7 +28,6 @@ export const setupServer = () => {
 
   app.use(cookieParser());
 
-  // app.use('/uploads', express.static(TEMP_UPLOAD_DIR));
   app.use('/api-docs', swaggerDocs());
 
   app.use(router);

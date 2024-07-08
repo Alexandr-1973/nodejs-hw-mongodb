@@ -1,4 +1,3 @@
-# swagger/paths/contacts/{id}/get.yaml
 tags:
   - Contacts
 summary: Get contact by id

@@ -583,7 +583,7 @@
         }
       },
       "404": {
-        "description": "Route not found error",
+        "description": "Contact not found error",
         "content": {
           "application/json": {
             "schema": {
@@ -599,7 +599,7 @@
                 },
                 "message": {
                   "type": "string",
-                  "example": "Route not found"
+                  "example": "Contact with 65e4decdd286b30065d54af9 not found"
                 }
               }
             }

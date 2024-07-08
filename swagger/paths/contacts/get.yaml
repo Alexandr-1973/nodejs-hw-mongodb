@@ -1,5 +1,3 @@
-#/swagger/paths/contacts/get.yaml
-
 tags:
   - Contacts
 summary: Get list of contacts

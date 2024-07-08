@@ -1,5 +1,3 @@
-#/swagger/paths/students/post.yaml
-
 tags:
   - Contacts
 summary: Patch contact
@@ -19,9 +17,6 @@ requestBody:
     multipart/form-data:
       schema:
         type: object
-        # required:
-        #   - name
-        #   - phoneNumber
         properties:
           name:
             description: "Contact's name"
