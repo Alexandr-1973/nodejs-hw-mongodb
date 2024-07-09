@@ -13,7 +13,6 @@ tags:
   - name: Auth
     description: Auth operations.
 servers:
-  - url: /
   - url: https://contact-app6-t5s6.onrender.com
     #посилання на задеплоєний сайт
 paths:
