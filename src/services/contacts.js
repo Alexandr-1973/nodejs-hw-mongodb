@@ -44,7 +44,8 @@ export const getAllContacts = async (
 
 export const getContactById = async (personalUserId, contactId) => {
   const contact = await Contact.findById(contactId);
-  if (contact.userId === personalUserId) {
+
+  if (contact && contact.userId === personalUserId) {
     return contact;
   } else {
     return null;

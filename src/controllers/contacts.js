@@ -41,6 +41,7 @@ export const getContactsController = async (req, res) => {
 export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
   const contact = await getContactById(req.user.id, contactId);
+
   if (!foundId(contactId, contact, next)) return;
 
   res.json({
@@ -67,7 +68,9 @@ export const createContactController = async (req, res) => {
     photo: photoUrl,
   });
 
-  await fs.unlink(path.join(TEMP_UPLOAD_DIR, req.file.filename));
+  if (photo) {
+    await fs.unlink(path.join(TEMP_UPLOAD_DIR, req.file.filename));
+  }
 
   res.status(201).json({
     status: 201,
@@ -83,21 +86,25 @@ export const patchContactController = async (req, res, next) => {
   const photo = req.file;
 
   let photoUrl;
+  let contact;
 
   if (photo) {
     photoUrl = await saveFileToCloudinary(photo);
+    contact = await updateContact(req.user.id, contactId, {
+      ...req.body,
+      photo: photoUrl,
+    });
   } else {
-    photoUrl = 'Without photo';
+    contact = await updateContact(req.user.id, contactId, {
+      ...req.body,
+    });
   }
-
-  const contact = await updateContact(req.user.id, contactId, {
-    ...req.body,
-    photo: photoUrl,
-  });
 
   if (!foundId(contactId, contact, next)) return;
 
-  await fs.unlink(path.join(TEMP_UPLOAD_DIR, req.file.filename));
+  if (photo) {
+    await fs.unlink(path.join(TEMP_UPLOAD_DIR, req.file.filename));
+  }
 
   res.json({
     status: 200,
